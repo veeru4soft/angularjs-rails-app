@@ -1,0 +1,31 @@
+<h1>Todos</h1>
+
+<input placeholder = "Search", ng-model="searchText"  class="pull-right" style="margin-top:-36px;margin-right:10%;"/>
+
+<div ng-show = 'todos == 0' class="">
+  No Todos found.
+</div>
+<div ng-hide = 'todos == 0' class="">
+<table class="table table-bordered table-hover">
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th> Assigned to </th>
+			<th> Project </th>
+			<th style="text-align:center"> Actions </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="todo in todos | filter:searchText ">
+			<td> {{todo.todo_thread}} </td>
+			<td> {{todo.user_id}} </td>
+			<td> {{todo.project_id}} </td>
+			<td> <a href="#/todos/{{todo.id}}"> show </a> </td>	
+
+		</tr>
+	</tbody>
+	
+</table>
+</div>
+
+<a href="/#todos/add"  class="btn btn-primary " >Add Todo </a>

@@ -1,0 +1,71 @@
+<br>
+<div class="jumbotron"> 
+    <div class="container">
+        <%= notice %>
+
+        <h2><%= form_title %></h2>
+
+        <%= form_for(@expense_record, :url => url_string) do |f| %>
+
+        <% if @expense_record.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@expense_record.errors.count, "error") %> prohibited this record from being saved:</h2>
+          <ul>
+            <% @expense_record.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+            <% end %>
+        </ul>
+    </div>
+    <% end %>
+    <%= hidden_field_tag :type, @expense_record.class.to_s %>
+    <%= hidden_field_tag :component, @expense_record.class.to_s %>
+
+    <% if action == :edit %>
+      <%= hidden_field_tag :component_id, @expense_record.id %>
+      <%= hidden_field_tag :initial_client_percentage, @expense_record.client_percentage %>
+    <% end %>
+
+    <%= f.hidden_field :scenario_id, :value => params[:scenario_id] %>
+
+    <%= f.label :record_name, "Name" %><br>
+    <%= f.text_field :record_name , :value => @expense_record.record_name, :autofocus => true %><br>
+
+    <%= f.label :description %><br>
+    <%= f.text_field :description, :value => @expense_record.description %><br><br>
+
+    <%= f.label :attribute_to %>
+    <% if action == :add %>
+      <%= collection_select(:record_client_dropdown, :clients, @clients, :id, :name, {}, :id => "record_client_dropdown") %>
+    <% else %>
+      <%= f.collection_select :client_id, @clients, :id, :name, {}, :id => "record_client_dropdown" %>
+    <% end %><br>
+
+    <div id="client_percentage">
+      <%= f.label :client_percentage, "#{@clients[0].name}'s ownership percentage" %><br>
+      <%= f.select(:client_percentage, [["50%", 50], ["25%", 25], ["75%", 75]]) %>
+    </div>
+
+    <%= f.label :amount, "Monthly expense amount" %><br>
+    <%= f.text_field :amount, :placeholder => "#{UserDefinitions::CURRENCY_UNIT}" %><br>
+
+    <%= f.label :essential_expense %>
+    <%= f.check_box :essential_expense, :checked => RecordsHelper.get_form_value(action == :add, @expense_record.essential_expense, true) %>
+    <h4>Uncheck if the expense is non-essential. Only essential expenses are included in any catastrophic scenarios.</h4>
+
+    <%= f.label :use_date_range, "Check to specify a future date range for the expense" %>
+    <%= f.check_box :use_date_range %><br>
+
+    <%= f.label :start_date %><br>
+    <%= f.date_select :start_date, :order => [:day, :month, :year], :discard_day => true, :start_year => Time.now.year, :end_year => RecordsHelper.calculate_expense_end_year %><br>
+    
+    <%= f.label :end_date %><br>
+    <%= f.date_select :end_date, :order => [:day, :month, :year], :discard_day => true, :start_year => Time.now.year, :end_year => RecordsHelper.calculate_expense_end_year %><br>
+
+    <%= f.label :index_link, "Index link using an inflation rate of #{@scenario.inflation_rate}%" %>
+    <%= f.check_box :index_link, :checked => RecordsHelper.get_form_value(action == :add, @expense_record.index_link, true) %><br>
+
+    <br>
+    <%= f.submit "Submit", class:"btn-large btn-success" %>
+    <% end %>
+</div>
+</div>

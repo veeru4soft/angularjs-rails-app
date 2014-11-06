@@ -1,0 +1,22 @@
+<form name="addTodoForm">
+	<fieldset>
+		<legend>Add a Todo</legend>
+		<label>Name:</label>
+		<input name="todoname" type="text" placeholder="Type the Todo Name..." ng-model="todo.name" required />
+		<span ng-show="addTodoForm.todoname.$error.required" class="help-inline">Required</span> <br/>
+		<select ng-model="todo.project_id" ng-options="project.id as project.name for project in projects" required>
+		<option value="">-- choose Project --</option>
+				</select><br/>
+
+		<select ng-model="todo.user_id" ng-options="user.id as user.email for user in users" required>
+					<option value="">-- Select User --</option>
+				</select><br/>		
+		
+		<button type="submit" class="btn btn-primary" ng-click="create(todo)" ng-disabled="addTodoForm.$invalid">Submit</button>
+	</fieldset>
+</form>
+<style>
+	.help-inline{
+		color: red;	
+	}
+</style>

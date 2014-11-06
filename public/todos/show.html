@@ -1,0 +1,37 @@
+<div>
+		<p>Todo Thread: {{todo.todo_thread}}</p>
+	</div>
+	<a class='btn' href="#/todos/{{todo.id}}/edit">Edit</a>
+	<button type="input" class="btn btn-danger" ng-click='remove(todo.id)'>Delete</button>
+
+	<h1>Comments</h1>
+		
+		<div data-ng-repeat = "comment2 in comments">
+				<strong> {{comment2.created_at | date:'MM-dd-yyyy HH:MM:ss'}} </strong>
+
+
+				<div ng-bind-html-unsafe="comment2.comment | limitTo: 15" id="{{comment2.id}}" class="rmore" title="Click to View More"> </div>
+
+
+				<div class="hide rmore_{{comment2.id}}" ng-bind-html-unsafe="comment2.comment"> </div>
+
+				<hr/>
+		</div>
+</div>
+
+
+<style>
+	.rmore:hover{
+		cursor: pointer !important;
+	}
+</style>
+
+<script>
+$(function(){
+		$(".rmore").live('click', function() { 
+			var r_more_id = $(this).attr("id");
+			$(this).hide();
+			$(".rmore_"+r_more_id).show();
+		});
+});
+</script>

@@ -1,0 +1,9 @@
+<form name="editTodoForm">
+	<fieldset>
+		<legend>Edit {{todo.name}}</legend>
+		<label>Name<label>
+		<input name="todoname" type="text" placeholder="Enter todo name..." ng-model='todo.name' required/>
+		<span ng-show="editTodoForm.todoname.$error.required" class="help-inline">Required</span>
+		<button type="submit" class="btn btn-primary" ng-click='update(todo)' ng-disabled="editTodoForm.$invalid">Update Todo</button>
+	</fieldset>
+</form>

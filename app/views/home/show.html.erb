@@ -1,0 +1,53 @@
+<%require './app/models/user_definitions'%>
+
+<div class="jumbotron">
+  <div class="container">
+    <%= notice %>
+    <h2>Adviser Dashboard</h2>
+    
+    <div class="container">
+      <div class="row">
+        <div id="create_client_div_id" class="col-md-4">
+          <h2>Create New Client</h2>
+          <a class="btn btn-default" href="/adviser/new_client" role="button">Select</a>
+  </div>
+  <div id="list_clients_div_id" class="col-md-4">
+    <h2>List/Edit Clients</h2>
+    <a class="btn btn-default" href="/adviser/index_clients" role="button">Select</a>
+  </div>
+  <div class="col-md-4">
+        <% if User.example_client_exists?(session[:user_id]) == false %>
+          <h2>Create Example Client</h2>
+          <a <%= link_to("Select", create_example_client_path, class:"btn btn-success") %></a>
+        <% end %>
+  </div>
+      </div>
+    </div>
+
+    <br>
+    
+    <% if UserDefinitions.is_admin_adviser_role?(session[:user_role]) %>
+    <div class="container">
+      <div class="row">
+        <div id="create_adviser_div_id" class="col-md-4">
+          <h2>Create New Adviser<br></h2>
+            <h4>Max Users: <%= @company.max_users %></h4>
+          <a class="btn btn-default" href="/adviser_admin/new" role="button">Select</a>
+  </div>
+  <div id="list_advisers_div_id" class="col-md-4">
+    <h2>List/Edit Advisers</h2>
+          <a class="btn btn-default" href= <%= "/#{session[:user_role]}/index" %> role="button">Select</a>
+  </div>
+  <div id="company_management_div_id" class="col-md-4">
+    <% if UserDefinitions.is_admin_adviser_role?(@user.role.description) %>
+    <h2>Company Management</h2>
+          <a class="btn btn-default" href= <%= "/companies/#{@company.id}/edit" %> role="button">Select</a>   
+    <% end %>
+  </div>
+      </div>
+    </div>
+    <% end %>
+
+  </div>
+  <hr>
+</div>
